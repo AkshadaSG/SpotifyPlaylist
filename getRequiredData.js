@@ -9,7 +9,6 @@ spotifyApi.setAccessToken(token);
 function getMyData() {
   (async () => {
     const me = await spotifyApi.getMe();
-    // console.log(me.body);
     getUserPlaylists(me.body.id);
   })().catch(e => {
     console.error(e);
@@ -20,14 +19,11 @@ function getMyData() {
 async function getUserPlaylists(userName) {
   const data = await spotifyApi.getUserPlaylists(userName)
 
-  console.log("---------------+++++++++++++++++++++++++")
   let playlists = []
 
   for (let playlist of data.body.items) {
-   // console.log(playlist.name + " " + playlist.id)
     
     let tracks = await getPlaylistTracks(playlist.id, playlist.name);
-   // console.log(tracks);
 
      const tracksJSON = { tracks }
      let data = JSON.stringify(tracksJSON);
@@ -44,19 +40,14 @@ async function getPlaylistTracks(playlistId, playlistName) {
     fields: 'items'
   })
 
-   //console.log('The playlist contains these tracks', data.body.items);
-  // console.log('The playlist contains these tracks: ', data.body.items[0].track);
-  // console.log("'" + playlistName + "'" + ' contains these tracks:');
   let tracks = [];
 
   for (let track_obj of data.body.items) {
     const track = track_obj.track
     tracks.push(track);
-   // console.log("track_obj.track.album", track_obj.track.album.images[0].url)
-   // console.log("^^^^^^^^^^^^^^^^^^^^" + track_obj.track.album.images[0].url + track_obj.track.name + " : " + track_obj.track.artists[0].name)
   }
   
-  //console.log("---------------+++++++++++++++++++++++++ )))))))", tracks)
+  
   return tracks;
 }
 
